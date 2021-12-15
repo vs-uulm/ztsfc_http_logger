@@ -87,9 +87,15 @@ func New(logFilePath, logLevel, logFormatter string, logFields Fields) (*Logger,
 		lr.SetOutput(logger.file)
 	}
 
+	// Assign logger logFields to logrus Fields variable
+	// ? Is there a better solution?
+	fields := logrus.Fields{}
+	for k, v := range logFields {
+		fields[k] = v
+	}
+
 	// Assign an entry of the logrus to the created Logger
-	// ! ToDo: replace by function parameter values
-	logger.logger = lr.WithFields(logrus.Fields{"type": "system"})
+	logger.logger = lr.WithFields(fields)
 
 	return logger, nil
 }
