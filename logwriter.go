@@ -46,7 +46,7 @@ func New(logFilePath, logLevel, logFormatter string, logFields logrus.Fields) (*
 	// Set the logging level
 	level, err := logrus.ParseLevel(logLevel)
 	if err != nil {
-		return nil, fmt.Errorf("logger: new(): unable to set the logging level %s: %w", logLevel, err)
+		return nil, fmt.Errorf("logger: new(): unable to set the logging level '%s': %w", logLevel, err)
 	}
 	lr.SetLevel(level)
 
@@ -57,7 +57,7 @@ func New(logFilePath, logLevel, logFormatter string, logFields logrus.Fields) (*
 	case "json":
 		lr.SetFormatter(&logrus.JSONFormatter{})
 	default:
-		return nil, fmt.Errorf("logger: new(): unknown logging formatter: %s", logFormatter)
+		return nil, fmt.Errorf("logger: new(): unknown logging formatter: '%s'", logFormatter)
 	}
 
 	// Set the os.Stdout or a file for writing the system log messages
@@ -67,20 +67,14 @@ func New(logFilePath, logLevel, logFormatter string, logFields logrus.Fields) (*
 		// Open a file for the logger output
 		logger.file, err = os.OpenFile(logFilePath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 		if err != nil {
-			return nil, fmt.Errorf("logger: new(): unable to open log file %s for writing: %w", logFilePath, err)
+			return nil, fmt.Errorf("logger: new(): unable to open log file '%s' for writing: %w", logFilePath, err)
 		}
 		// Redirect the logger output to the file
 		lr.SetOutput(logger.file)
 	}
 
 	// Assign an entry of the logrus to the created Logger
-	// !ToDo: check if the logFields are empty
-	// if logFields == <empty> {...}
-	if false {
-		logger.logger = logrus.NewEntry(lr)
-	} else {
-		logger.logger = lr.WithFields(logFields)
-	}
+	logger.logger = lr.WithFields(logFields)
 
 	return logger, nil
 }
