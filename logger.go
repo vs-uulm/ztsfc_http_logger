@@ -13,7 +13,6 @@ package ztsfc_http_logger
 
 import (
 	"crypto/tls"
-	"errors"
 	"fmt"
 	"net/http"
 	"os"
@@ -71,11 +70,7 @@ func New(logFilePath, logLevel, logFormatter string, logFields Fields) (*Logger,
 	}
 
 	// Set the os.Stdout or a file for writing the system log messages
-	if logFilePath == "" {
-		return nil, errors.New("logger: new(): a log file path is empty")
-	}
-
-	if strings.ToLower(logFilePath) == "stdout" {
+	if len(logFilePath) == 0 || strings.ToLower(logFilePath) == "stdout" {
 		lr.SetOutput(os.Stdout)
 	} else {
 		// Open a file for the logger output
