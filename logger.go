@@ -40,6 +40,12 @@ func New(logFilePath, logLevel, logFormatter string, logFields logrus.Fields) (*
 		file:      nil,
 	}
 
+	// If not stated, a "info" logginf level is used, since an http.Server and httputil.ReverseProxy
+	// use the "info" level when send messages to a given Writer.
+	if logLevel == "" {
+		logger.level = "info"
+	}
+
 	// Create a new instance of the logrus logger
 	lr := logrus.New()
 
@@ -52,10 +58,13 @@ func New(logFilePath, logLevel, logFormatter string, logFields logrus.Fields) (*
 
 	// Set the system logger formatter
 	switch strings.ToLower(logFormatter) {
-	case "text":
-		lr.SetFormatter(&logrus.TextFormatter{})
+	// If not stated, a json will be used as a default formater
+	case "":
+		fallthrough
 	case "json":
 		lr.SetFormatter(&logrus.JSONFormatter{})
+	case "text":
+		lr.SetFormatter(&logrus.TextFormatter{})
 	default:
 		return nil, fmt.Errorf("logger: new(): unknown logging formatter: '%s'", logFormatter)
 	}
