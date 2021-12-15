@@ -31,7 +31,7 @@ type Logger struct {
 }
 
 // New() creates and configures a new instance of the logger.
-func New(logFilePath, logLevel, logFormatter string, logFields logrus.Fields) (*Logger, error) {
+func New(logFilePath, logLevel, logFormatter string, logFields Fields) (*Logger, error) {
 	// Create a new instance of the Logger
 	logger := &Logger{
 		logger:    &logrus.Entry{},
@@ -88,7 +88,8 @@ func New(logFilePath, logLevel, logFormatter string, logFields logrus.Fields) (*
 	}
 
 	// Assign an entry of the logrus to the created Logger
-	logger.logger = lr.WithFields(logFields)
+	// ! ToDo: replace by function parameter values
+	logger.logger = lr.WithFields(logrus.Fields{"type": "system"})
 
 	return logger, nil
 }

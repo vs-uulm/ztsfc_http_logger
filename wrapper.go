@@ -18,6 +18,8 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+type Fields map[string]interface{}
+
 // Trace() calls the corresponding function of the original logrus package
 func (lw *Logger) Trace(args ...interface{}) {
 	lw.logger.Trace(args...)
