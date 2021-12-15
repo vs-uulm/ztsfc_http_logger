@@ -1,4 +1,4 @@
-GO_BUILD_TARGET=./src
+GO_BUILD_TARGET=.
 
 .PHONY: source
 source:
