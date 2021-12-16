@@ -22,22 +22,22 @@ import (
 )
 
 type Logger struct {
-	logger    *logrus.Entry
-	filePath  string
+	lr        *logrus.Entry
 	level     string
+	logFile   *os.File
+	filePath  string
 	formatter string
-	file      *os.File
 }
 
 // New() creates and configures a new instance of the logger.
 func New(logFilePath, logLevel, logFormatter string, logFields Fields) (*Logger, error) {
 	// Create a new instance of the Logger
 	logger := &Logger{
-		logger:    &logrus.Entry{},
+		lr:        &logrus.Entry{},
 		filePath:  logFilePath,
 		level:     logLevel,
 		formatter: logFormatter,
-		file:      nil,
+		logFile:   nil,
 	}
 
 	// If not stated, a "info" logginf level is used, since an http.Server and httputil.ReverseProxy
@@ -74,12 +74,12 @@ func New(logFilePath, logLevel, logFormatter string, logFields Fields) (*Logger,
 		lr.SetOutput(os.Stdout)
 	} else {
 		// Open a file for the logger output
-		logger.file, err = os.OpenFile(logFilePath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+		logger.logFile, err = os.OpenFile(logFilePath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 		if err != nil {
 			return nil, fmt.Errorf("logger: new(): unable to open log file '%s' for writing: %w", logFilePath, err)
 		}
 		// Redirect the logger output to the file
-		lr.SetOutput(logger.file)
+		lr.SetOutput(logger.logFile)
 	}
 
 	// Assign logger logFields to logrus Fields variable
@@ -90,28 +90,28 @@ func New(logFilePath, logLevel, logFormatter string, logFields Fields) (*Logger,
 	}
 
 	// Assign an entry of the logrus to the created Logger
-	logger.logger = lr.WithFields(fields)
+	logger.lr = lr.WithFields(fields)
 
 	return logger, nil
 }
 
 // Function for calling by http.Server or httputil.ReverseProxy ErrorLog
-func (lw *Logger) Write(p []byte) (n int, err error) {
+func (logger *Logger) Write(p []byte) (n int, err error) {
 	// Customization of the line to be logged
 	output := string(p)
 	if !strings.Contains(output, ",success") {
 		output = strings.TrimSuffix(output, "\n")
-		lw.logger.WithFields(logrus.Fields{"result": "denied"}).Info(output)
+		logger.lr.WithFields(logrus.Fields{"result": "denied"}).Info(output)
 	} else {
 		output = strings.TrimSuffix(output, ",success")
-		lw.logger.WithFields(logrus.Fields{"result": "success"}).Info(output)
+		logger.lr.WithFields(logrus.Fields{"result": "success"}).Info(output)
 	}
 	return 1, nil
 }
 
 // The LogHTTPRequest() function logs an HTTP request details
-func (lw *Logger) LogHTTPRequest(req *http.Request) {
-	lw.Infof("%s,%s,%s,%t,%t,%s,success",
+func (logger *Logger) LogHTTPRequest(req *http.Request) {
+	logger.Infof("%s,%s,%s,%t,%t,%s,success",
 		req.RemoteAddr,
 		req.TLS.ServerName,
 		getTLSVersionName(req.TLS.Version),
@@ -120,6 +120,10 @@ func (lw *Logger) LogHTTPRequest(req *http.Request) {
 		tls.CipherSuiteName(req.TLS.CipherSuite))
 }
 
-// func (lw *Logger) Terminate() {
-// 	lw.logfile.Close()
-// }
+// Terminate() gracefully shuts the logger down
+func (logger *Logger) Terminate() {
+	// Close the log file if it was open
+	if logger.logFile != nil {
+		logger.logFile.Close()
+	}
+}

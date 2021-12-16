@@ -21,126 +21,126 @@ import (
 type Fields map[string]interface{}
 
 // Trace() calls the corresponding function of the original logrus package
-func (lw *Logger) Trace(args ...interface{}) {
-	lw.logger.Trace(args...)
+func (logger *Logger) Trace(args ...interface{}) {
+	logger.lr.Trace(args...)
 }
 
 // Tracef() calls the corresponding function of the original logrus package
-func (lw *Logger) Tracef(format string, args ...interface{}) {
-	lw.logger.Tracef(format, args...)
+func (logger *Logger) Tracef(format string, args ...interface{}) {
+	logger.lr.Tracef(format, args...)
 }
 
 // Traceln() calls the corresponding function of the original logrus package
-func (lw *Logger) Traceln(format string, args ...interface{}) {
-	lw.logger.Traceln(args...)
+func (logger *Logger) Traceln(format string, args ...interface{}) {
+	logger.lr.Traceln(args...)
 }
 
 // Debug() calls the corresponding function of the original logrus package
-func (lw *Logger) Debug(args ...interface{}) {
-	lw.logger.Debug(args...)
+func (logger *Logger) Debug(args ...interface{}) {
+	logger.lr.Debug(args...)
 }
 
 // Debugf() calls the corresponding function of the original logrus package
-func (lw *Logger) Debugf(format string, args ...interface{}) {
-	lw.logger.Debugf(format, args...)
+func (logger *Logger) Debugf(format string, args ...interface{}) {
+	logger.lr.Debugf(format, args...)
 }
 
 // Debugln() calls the corresponding function of the original logrus package
-func (lw *Logger) Debugln(format string, args ...interface{}) {
-	lw.logger.Debugln(args...)
+func (logger *Logger) Debugln(format string, args ...interface{}) {
+	logger.lr.Debugln(args...)
 }
 
 // Info() calls the corresponding function of the original logrus package
-func (lw *Logger) Info(args ...interface{}) {
-	lw.logger.Info(args...)
+func (logger *Logger) Info(args ...interface{}) {
+	logger.lr.Info(args...)
 }
 
 // Infof() calls the corresponding function of the original logrus package
-func (lw *Logger) Infof(format string, args ...interface{}) {
-	lw.logger.Infof(format, args...)
+func (logger *Logger) Infof(format string, args ...interface{}) {
+	logger.lr.Infof(format, args...)
 }
 
 // Infoln() calls the corresponding function of the original logrus package
-func (lw *Logger) Infoln(format string, args ...interface{}) {
-	lw.logger.Infoln(args...)
+func (logger *Logger) Infoln(format string, args ...interface{}) {
+	logger.lr.Infoln(args...)
 }
 
 // Warn() calls the corresponding function of the original logrus package
-func (lw *Logger) Warn(args ...interface{}) {
-	lw.logger.Warn(args...)
-	lw.logger.Warning()
+func (logger *Logger) Warn(args ...interface{}) {
+	logger.lr.Warn(args...)
+	logger.lr.Warning()
 }
 
 // Warnf() calls the corresponding function of the original logrus package
-func (lw *Logger) Warnf(format string, args ...interface{}) {
-	lw.logger.Warnf(format, args...)
+func (logger *Logger) Warnf(format string, args ...interface{}) {
+	logger.lr.Warnf(format, args...)
 }
 
 // Warnln() calls the corresponding function of the original logrus package
-func (lw *Logger) Warnln(format string, args ...interface{}) {
-	lw.logger.Warnln(args...)
+func (logger *Logger) Warnln(format string, args ...interface{}) {
+	logger.lr.Warnln(args...)
 }
 
 // Error() calls the corresponding function of the original logrus package
-func (lw *Logger) Error(args ...interface{}) {
-	lw.logger.Error(args...)
+func (logger *Logger) Error(args ...interface{}) {
+	logger.lr.Error(args...)
 }
 
 // Errorf() calls the corresponding function of the original logrus package
-func (lw *Logger) Errorf(format string, args ...interface{}) {
-	lw.logger.Errorf(format, args...)
+func (logger *Logger) Errorf(format string, args ...interface{}) {
+	logger.lr.Errorf(format, args...)
 }
 
 // Errorln() calls the corresponding function of the original logrus package
-func (lw *Logger) Errorln(format string, args ...interface{}) {
-	lw.logger.Errorln(args...)
+func (logger *Logger) Errorln(format string, args ...interface{}) {
+	logger.lr.Errorln(args...)
 }
 
 // Fatal() calls the corresponding function of the original logrus package
-func (lw *Logger) Fatal(args ...interface{}) {
-	lw.logger.Fatal(args...)
+func (logger *Logger) Fatal(args ...interface{}) {
+	logger.lr.Fatal(args...)
 }
 
 // Fatalf() calls the corresponding function of the original logrus package
-func (lw *Logger) Fatalf(format string, args ...interface{}) {
-	lw.logger.Fatalf(format, args...)
+func (logger *Logger) Fatalf(format string, args ...interface{}) {
+	logger.lr.Fatalf(format, args...)
 }
 
 // Fatalln() calls the corresponding function of the original logrus package
-func (lw *Logger) Fatalln(format string, args ...interface{}) {
-	lw.logger.Fatalln(args...)
+func (logger *Logger) Fatalln(format string, args ...interface{}) {
+	logger.lr.Fatalln(args...)
 }
 
 // Panic() calls the corresponding function of the original logrus package
-func (lw *Logger) Panic(args ...interface{}) {
-	lw.logger.Panic(args...)
+func (logger *Logger) Panic(args ...interface{}) {
+	logger.lr.Panic(args...)
 }
 
 // Panicf() calls the corresponding function of the original logrus package
-func (lw *Logger) Panicf(format string, args ...interface{}) {
-	lw.logger.Panicf(format, args...)
+func (logger *Logger) Panicf(format string, args ...interface{}) {
+	logger.lr.Panicf(format, args...)
 }
 
 // Panicln() calls the corresponding function of the original logrus package
-func (lw *Logger) Panicln(format string, args ...interface{}) {
-	lw.logger.Panicln(args...)
+func (logger *Logger) Panicln(format string, args ...interface{}) {
+	logger.lr.Panicln(args...)
 }
 
 //
 
 // WithField() calls the corresponding function of the original logrus package
-func (lw *Logger) WithField(key string, value interface{}) *logrus.Entry {
-	return lw.logger.WithField(key, value)
+func (logger *Logger) WithField(key string, value interface{}) *logrus.Entry {
+	return logger.lr.WithField(key, value)
 }
 
 // WithFields() calls the corresponding function of the original logrus package
-func (lw *Logger) WithFields(fields logrus.Fields) *logrus.Entry {
-	return lw.logger.WithFields(fields)
+func (logger *Logger) WithFields(fields logrus.Fields) *logrus.Entry {
+	return logger.lr.WithFields(fields)
 }
 
 //
 
 // GetWriter() calls the corresponding function of the original logrus package
-func (lw *Logger) GetWriter() *io.PipeWriter {
-	return lw.logger.Writer()
+func (logger *Logger) GetWriter() *io.PipeWriter {
+	return logger.lr.Writer()
 }
