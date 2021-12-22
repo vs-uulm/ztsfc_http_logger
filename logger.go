@@ -40,7 +40,7 @@ func New(logFilePath, logLevel, logFormatter string, logFields Fields) (*Logger,
 		logFile:   nil,
 	}
 
-	// If not stated, a "info" logginf level is used, since an http.Server and httputil.ReverseProxy
+	// If not stated, a "info" logging level is used, since an http.Server and httputil.ReverseProxy
 	// use the "info" level when send messages to a given Writer.
 	if logLevel == "" {
 		logger.level = "info"
@@ -52,11 +52,11 @@ func New(logFilePath, logLevel, logFormatter string, logFields Fields) (*Logger,
 	// Set the logging level
 	level, err := logrus.ParseLevel(logLevel)
 	if err != nil {
-		return nil, fmt.Errorf("logger: new(): unable to set the logging level '%s': %w", logLevel, err)
+		return nil, fmt.Errorf("logger: New(): unable to set the logging level '%s': %w", logLevel, err)
 	}
 	lr.SetLevel(level)
 
-	// Set the system logger formatter
+	// Set the logger formatter
 	switch strings.ToLower(logFormatter) {
 	// If not stated, a json will be used as a default formater
 	case "":
@@ -66,28 +66,24 @@ func New(logFilePath, logLevel, logFormatter string, logFields Fields) (*Logger,
 	case "text":
 		lr.SetFormatter(&logrus.TextFormatter{})
 	default:
-		return nil, fmt.Errorf("logger: new(): unknown logging formatter: '%s'", logFormatter)
+		return nil, fmt.Errorf("logger: New(): unknown logging formatter '%s'", logFormatter)
 	}
 
-	// Set the os.Stdout or a file for writing the system log messages
+	// Set the os.Stdout or a file for writing the log messages
 	if len(logFilePath) == 0 || strings.ToLower(logFilePath) == "stdout" {
 		lr.SetOutput(os.Stdout)
 	} else {
 		// Open a file for the logger output
 		logger.logFile, err = os.OpenFile(logFilePath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 		if err != nil {
-			return nil, fmt.Errorf("logger: new(): unable to open log file '%s' for writing: %w", logFilePath, err)
+			return nil, fmt.Errorf("logger: New(): unable to open the file '%s' for writing: %w", logFilePath, err)
 		}
 		// Redirect the logger output to the file
 		lr.SetOutput(logger.logFile)
 	}
 
 	// Assign logger logFields to logrus Fields variable
-	// ? Is there a better solution?
-	fields := logrus.Fields{}
-	for k, v := range logFields {
-		fields[k] = v
-	}
+	fields := logrus.Fields(logFields)
 
 	// Assign an entry of the logrus to the created Logger
 	logger.lr = lr.WithFields(fields)
