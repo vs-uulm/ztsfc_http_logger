@@ -134,8 +134,8 @@ func (logger *Logger) WithField(key string, value interface{}) *logrus.Entry {
 }
 
 // WithFields() calls the corresponding function of the original logrus package
-func (logger *Logger) WithFields(fields logrus.Fields) *logrus.Entry {
-	return logger.lr.WithFields(fields)
+func (logger *Logger) WithFields(fields Fields) *logrus.Entry {
+	return logger.lr.WithFields(logrus.Fields(fields))
 }
 
 //
