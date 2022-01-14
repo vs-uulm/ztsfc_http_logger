@@ -52,7 +52,7 @@ func New(logFilePath, logLevel, logFormatter string, logFields Fields) (*Logger,
 	// Set the logging level
 	level, err := logrus.ParseLevel(logLevel)
 	if err != nil {
-		return nil, fmt.Errorf("logger: New(): unable to set the logging level '%s': %w", logLevel, err)
+		return nil, fmt.Errorf("logger: New(): unable to set the logging level '%s': %s", logLevel, err.Error())
 	}
 	lr.SetLevel(level)
 
@@ -76,7 +76,7 @@ func New(logFilePath, logLevel, logFormatter string, logFields Fields) (*Logger,
 		// Open a file for the logger output
 		logger.logFile, err = os.OpenFile(logFilePath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 		if err != nil {
-			return nil, fmt.Errorf("logger: New(): unable to open the file '%s' for writing: %w", logFilePath, err)
+			return nil, fmt.Errorf("logger: New(): unable to open the file '%s' for writing: %s", logFilePath, err.Error())
 		}
 		// Redirect the logger output to the file
 		lr.SetOutput(logger.logFile)
