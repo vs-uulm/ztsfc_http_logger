@@ -144,3 +144,10 @@ func (logger *Logger) WithFields(fields Fields) *logrus.Entry {
 func (logger *Logger) GetWriter() *io.PipeWriter {
 	return logger.lr.Writer()
 }
+
+//
+
+// AddHook() calls the corresponding function of the original logrus package
+func (logger *Logger) AddHook(hook logrus.Hook) {
+	logger.lr.Logger.AddHook(hook)
+}
